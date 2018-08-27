@@ -1,33 +1,33 @@
 [submodule "workspace/robosherlock"]
-	path = workspace/robosherlock
+	path = workspace/rs_ws/robosherlock
 	url = https://github.com/RoboSherlock/robosherlock.git
 	branch = devel
 [submodule "workspace/src/robosherlock_msgs"]
 	path = workspace/robosherlock_msgs
 	url = git@github.com/robosherlock/robosherlock_msgs.git
 [submodule "workspace/iai_common_msgs"]
-	path = workspace/iai_common_msgs
+	path = workspace/kr_ws/iai_common_msgs
 	url = https://github.com/code-iai/iai_common_msgs
 [submodule "workspace/iai_maps"]
-	path = workspace/iai_maps
+	path = workspace/kr_ws/iai_maps
 	url = https://github.com/code-iai/iai_maps
 [submodule "workspace/knowrob"]
-	path = workspace/knowrob
+	path = workspace/kr_ws/knowrob
 	url = https://github.com/knowrob/knowrob
 	branch = kinetic
 [submodule "workspace/robosherlock_knowrob"]
-	path = workspace/robosherlock_knowrob
+	path = workspace/rs_ws/robosherlock_knowrob
 	url = https://github.com/RoboSherlock/robosherlock_knowrob
 	branch = dev_planner
 [submodule "workspace/uimacpp_ros"]
-	path = workspace/uimacpp_ros
+	path = workspace/rs_ws/uimacpp_ros
 	url = https://github.com/RoboSherlock/uimacpp_ros
 [submodule "workspace/rs_run_configs"]
-	path = workspace/rs_run_configs
+	path = workspace/rs_ws/rs_run_configs
 	url = https://github.com/bbferka/rs_run_configs
 [submodule "workspace/rs_web"]
-	path = workspace/rs_web
+	path = workspace/rs_ws/rs_web
 	url = https://github.com/robosherlock/rs_web
 [submodule "workspace/robosherlock_msgs"]
-	path = workspace/robosherlock_msgs
+	path = workspace/rs_ws/robosherlock_msgs
 	url = https://github.com/RoboSherlock/robosherlock_msgs
