@@ -52,6 +52,7 @@ RUN mkdir /home/rs/catkin_ws && cd /home/rs/catkin_ws && \
   #  cd .. 
 
 COPY workspace /home/rs/catkin_ws/src/ 
+
 WORKDIR /home/rs/catkin_ws
 RUN chown -R rs:rs .
 
@@ -61,7 +62,8 @@ ENV TERM=xterm
 RUN /bin/bash -c "source /opt/ros/kinetic/setup.bash" && \
     catkin init && \
     catkin config --extend /opt/ros/kinetic && \
-    catkin build --verbose --cmake-args -DWITH_JSON_PROLOG=True
+    catkin build --verbose --cmake-args -DWITH_JSON_PROLOG=True && \
+    rosdep update
 
 ENV USER=rs
 EXPOSE 5555
@@ -83,4 +85,4 @@ EXPOSE 3000
 COPY ./start.sh /
 ENTRYPOINT ["/start.sh"]
 #CMD ["/bin/bash", "-c", "source /root/catkin_ws/devel/setup.bash"]
-CMD ["roslaunch","/home/rs/catkin_ws/src/rs_run_configs/launch/pnp_ease_with_json_prolog.launch"]
+CMD ["roslaunch","/home/rs/catkin_ws/src/rs_run_configs/launch/json_prolog_and_rosbridge.launch"]
