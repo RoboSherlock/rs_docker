@@ -14,7 +14,8 @@ RUN apt-get update && apt-get install -y \
     swi-prolog \
     swi-prolog-java \
     libjson-java \
-    libjson-glib-dev \ 
+    libjson-glib-dev \
+    ros-kinetic-rosconsole-bridge \ 
     ros-kinetic-libmongocxx-ros \
     ros-kinetic-tf-conversions \
     ros-kinetic-resource-retriever \ 
@@ -29,7 +30,7 @@ RUN apt-get update && apt-get install -y \
     gdb \
     vim
 
-RUN pip install flask pymongo pyparsing socketio flask-paginate flask-wtf gevent
+RUN pip install flask pymongo pyparsing socketio flask-paginate flask-wtf gevent lxml
 
 RUN useradd -ms /bin/bash rs &&\
     echo 'rs:rs' | chpasswd
@@ -52,7 +53,6 @@ RUN mkdir -p /home/rs/base_ws/src && \
   #  cd .. 
 
 COPY workspace/kr_ws /home/rs/base_ws/src/ 
-COPY workspace/rs_ws /home/rs/rs_ws/src/ 
 
 WORKDIR /home/rs/
 RUN chown -R rs:rs .
@@ -65,7 +65,11 @@ RUN /bin/bash -c "source /opt/ros/kinetic/setup.bash" && \
     catkin config --extend /opt/ros/kinetic && \
     catkin build --verbose
 
+USER root
+COPY workspace/rs_ws /home/rs/rs_ws/src/ 
 WORKDIR /home/rs/rs_ws
+RUN chown -R rs:rs .
+USER rs
 RUN /bin/bash -c "source /home/rs/base_ws/devel/setup.bash" && \
     catkin init && \
     catkin config --extend /home/rs/base_ws/devel && \

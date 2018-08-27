@@ -31,3 +31,6 @@
 [submodule "workspace/robosherlock_msgs"]
 	path = workspace/rs_ws/robosherlock_msgs
 	url = https://github.com/RoboSherlock/robosherlock_msgs
+[submodule "wetty"]
+	path = wetty
+	url = https://github.com/krishnasrinivas/wetty.git
