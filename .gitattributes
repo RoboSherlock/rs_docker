@@ -1,1 +1,2 @@
 dump/PnP09ObjSymbolicGTFixed/color_image_hd.bson filter=lfs diff=lfs merge=lfs -text
+dump/PnP09ObjSymbolicGTFixed/depth_image_hd.bson filter=lfs diff=lfs merge=lfs -text
