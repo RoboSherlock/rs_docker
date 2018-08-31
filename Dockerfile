@@ -41,7 +41,7 @@ ENV LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
 RUN mkdir -p /home/rs/base_ws/src && \
     mkdir -p /home/rs/rs_ws/src && \ 
     mkdir -p /home/rs/mongo && \
-    mkdir -p /home/rs/dump/IJRRScenes
+    mkdir -p /home/rs/dump
   #  git clone https://github.com/knowrob/knowrob -b kinetic && \
   #  git clone https://github.com/code-iai/iai_maps && \
   #  git clone https://github.com/code-iai/iai_common_msgs && \
@@ -79,7 +79,7 @@ RUN /bin/bash -c "source /home/rs/base_ws/devel/setup.bash" && \
 ENV USER=rs
 EXPOSE 5555
 
-COPY ./IJRRScenes/ /home/rs/dump/IJRRScenes
+COPY ./dump/ /home/rs/dump
 
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - ; \

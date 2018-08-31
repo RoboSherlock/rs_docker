@@ -21,7 +21,7 @@ X_WINDOW_OPTS_PAP="--volume=$XSOCK:$XSOCK --volume=$XAUTH:$XAUTH --env=XAUTHORIT
 #${IMAGE_NAME} /bin/bash
 
 docker run -d $X_WINDOW_OPTS_PAP \
-  -p 3000:3000 -p 1111:5555 -p 9090:9090 \
+  -p 3000:3000 -p 1111:5555 -p 9090:9090 -p 8080:8080 \
   --network="host" \
-  --name rs_container-2 \
+  --name rs_container \
 ${IMAGE_NAME}

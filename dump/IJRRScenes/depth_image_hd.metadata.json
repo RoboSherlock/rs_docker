@@ -1,0 +1,1 @@
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "IJRRScenes.depth_image_hd", "name" : "_id_" } ] }
