@@ -1,0 +1,2 @@
+color_image_hd.bson filter=lfs diff=lfs merge=lfs -text
+depth_image_hd.bson filter=lfs diff=lfs merge=lfs -text
