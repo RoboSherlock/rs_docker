@@ -2,9 +2,6 @@
 	path = workspace/rs_ws/robosherlock
 	url = https://github.com/RoboSherlock/robosherlock.git
 	branch = devel
-[submodule "workspace/src/robosherlock_msgs"]
-	path = workspace/robosherlock_msgs
-	url = git@github.com/robosherlock/robosherlock_msgs.git
 [submodule "workspace/iai_common_msgs"]
 	path = workspace/kr_ws/iai_common_msgs
 	url = https://github.com/code-iai/iai_common_msgs
@@ -34,3 +31,6 @@
 [submodule "wetty"]
 	path = wetty
 	url = https://github.com/krishnasrinivas/wetty.git
+[submodule "rs_addons"]
+	path = workspace/rs_ws/rs_addons
+	url = https://github.com/bbferka/rs_addons.git
