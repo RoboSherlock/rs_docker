@@ -28,7 +28,8 @@ RUN apt-get update && apt-get install -y \
     python-catkin-tools \
     python-pip \
     gdb \
-    vim
+    vim \ 
+    libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler libgflags-dev libgoogle-glog-dev liblmdb-dev libatlas-base-dev libatlas-dev libatlas3-base
 
 RUN pip install flask pymongo pyparsing socketio flask-paginate flask-wtf gevent lxml
 
@@ -41,7 +42,8 @@ ENV LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
 RUN mkdir -p /home/rs/base_ws/src && \
     mkdir -p /home/rs/rs_ws/src && \ 
     mkdir -p /home/rs/mongo && \
-    mkdir -p /home/rs/dump
+    mkdir -p /home/rs/dump && \ 
+    mkdir -p /home/rs/local/src
   #  git clone https://github.com/knowrob/knowrob -b kinetic && \
   #  git clone https://github.com/code-iai/iai_maps && \
   #  git clone https://github.com/code-iai/iai_common_msgs && \
@@ -51,6 +53,11 @@ RUN mkdir -p /home/rs/base_ws/src && \
   #  git clone https://github.com/RoboSherlock/robosherlock_knowrob && \
   #  git clone https://github.com/RoboSherlock/rs_web -b dev_unification && \
   #  cd .. 
+
+WORKDIR /home/rs/local/src/
+RUN git clone https://github.com/bvlc/caffe
+WORKDIR /home/rs/local/src/caffe/
+RUN mkdir build && cd build && cmake ../ -DCPU_ONLY=On -DCMAKE_INSTALL_PREFIX=/usr/local && make && make install
 
 COPY workspace/kr_ws /home/rs/base_ws/src/ 
 
