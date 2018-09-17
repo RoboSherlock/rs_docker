@@ -97,7 +97,7 @@ WORKDIR /home/rs/wetty
 USER root
 RUN npm install 
 
-RUN echo "source /home/rs/catkin_ws/devel/setup.bash" >> /home/rs/.bashrc
+RUN echo "source /home/rs/rs_ws/devel/setup.bash" >> /home/rs/.bashrc
 
 EXPOSE 3000
 COPY ./start.sh /
