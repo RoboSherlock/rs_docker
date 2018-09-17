@@ -86,8 +86,8 @@ RUN /bin/bash -c "source /home/rs/base_ws/devel/setup.bash" && \
 ENV USER=rs
 EXPOSE 5555
 
-COPY ./dump/ /home/rs/dump
-
+COPY ./dump /home/rs/dump
+COPY ./data /home/rs/data
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - ; \
     apt-get install -y nodejs
