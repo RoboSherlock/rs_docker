@@ -155,4 +155,4 @@ RUN echo "export DISPLAY=:0.0" >> /home/rs/.bashrc
 EXPOSE 3000
 COPY ./start.sh /
 ENTRYPOINT ["/start.sh"]
-CMD ["roslaunch","/home/rs/rs_ws/src/rs_run_configs/launch/json_prolog_and_rosbridge.launch"]cd 
+CMD ["roslaunch","/home/rs/rs_ws/src/rs_run_configs/launch/json_prolog_and_rosbridge.launch"]
