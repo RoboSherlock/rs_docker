@@ -1,3 +1,5 @@
+#1. Installing Core Libraries
+
 FROM ros:kinetic-perception-xenial
 
 RUN apt-get update && apt-get install -y software-properties-common
@@ -26,10 +28,26 @@ RUN apt-get update && apt-get install -y \
     ros-kinetic-xacro \ 
     ros-kinetic-urdf \
     python-catkin-tools \
+    ros-kinetic-catkin \
+    libpthread-stubs0-dev\
+    librrd-dev \
+    libpython-dev \
+    python-bs4 \
+    python-chardet \
+    python-html5lib \
+    python-lxml \
     python-pip \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    freeglut3-dev \
+    mesa-common-dev \
     gdb \
     vim \ 
     libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler libgflags-dev libgoogle-glog-dev liblmdb-dev libatlas-base-dev libatlas-dev libatlas3-base
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y nvidia-384
+
+RUN pip install python-rrdtool
 
 RUN pip install flask pymongo pyparsing socketio flask-paginate flask-wtf gevent lxml
 
@@ -38,69 +56,103 @@ RUN useradd -ms /bin/bash rs &&\
 
 ENV LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
 
+#2. Making directories for robosherlock packages
 
 RUN mkdir -p /home/rs/base_ws/src && \
     mkdir -p /home/rs/rs_ws/src && \ 
     mkdir -p /home/rs/mongo && \
     mkdir -p /home/rs/dump && \ 
     mkdir -p /home/rs/local/src
-  #  git clone https://github.com/knowrob/knowrob -b kinetic && \
-  #  git clone https://github.com/code-iai/iai_maps && \
-  #  git clone https://github.com/code-iai/iai_common_msgs && \
-  #  git clone https://github.com/RoboSherlock/uimacpp_ros && \
-  #  git clone https://github.com/RoboSherlock/robosherlock -b devel && \
-  #  git clone https://github.com/RoboSherlock/robosherlock_msgs && \
-  #  git clone https://github.com/RoboSherlock/robosherlock_knowrob && \
-  #  git clone https://github.com/RoboSherlock/rs_web -b dev_unification && \
-  #  cd .. 
+
+#3. Downloading core packages of robosherlock
+
+WORKDIR /home/rs/rs_ws/src
+RUN git clone https://github.com/fkenghagho/robosherlock.git -b devel --recursive && \
+    git clone https://github.com/RoboSherlock/rs_web 
+
+
+#4. Downloading Caffe package
 
 WORKDIR /home/rs/local/src/
 RUN git clone https://github.com/bvlc/caffe
+
+#5. Building Caffe
+
 WORKDIR /home/rs/local/src/caffe/
 RUN mkdir build && cd build && cmake ../ -DCPU_ONLY=On -DCMAKE_INSTALL_PREFIX=/usr/local && make && make install
-
-COPY workspace/kr_ws /home/rs/base_ws/src/ 
+ 
+#6. Downloading Knowrob
 
 WORKDIR /home/rs/
 RUN chown -R rs:rs .
 WORKDIR /home/rs/base_ws
-USER rs
-
-ENV TERM=xterm
-RUN /bin/bash -c "source /opt/ros/kinetic/setup.bash" && \
-    catkin init && \
-    catkin config --extend /opt/ros/kinetic && \
-    catkin build --verbose
-
 USER root
-COPY workspace/rs_ws /home/rs/rs_ws/src/ 
-WORKDIR /home/rs/rs_ws
+ENV TERM=xterm
+RUN /bin/bash -c "source /opt/ros/kinetic/setup.bash"
+WORKDIR /home/rs/base_ws/src
+RUN rosdep update && \
+    wstool init && \
+    wstool merge https://raw.github.com/knowrob/knowrob/6e1d2701442f4c2d5461325647e3bd6a0e4701d2/rosinstall/knowrob-base.rosinstall && \  
+    wstool update
+    
+
+#7. Building Knowrob
+
+WORKDIR /home/rs/base_ws/src/knowrob
+RUN    git checkout 6e1d2701442f4c2d5461325647e3bd6a0e4701d2 
+WORKDIR /home/rs/base_ws
+RUN    rosdep install --ignore-src --from-paths -y . && \
+       catkin config --extend /opt/ros/kinetic && \
+       catkin build --verbose
+
+#7.2. Downloading iai_maps
+
+WORKDIR /home/rs/base_ws/src
+RUN git clone https://github.com/code-iai/iai_maps.git
+
+#7.3. Building iai_maps
+
+WORKDIR /home/rs/base_ws
+RUN catkin build iai_maps --verbose
 RUN chown -R rs:rs .
-USER rs
-RUN /bin/bash -c "source /home/rs/base_ws/devel/setup.bash" && \
-    catkin init && \
+
+#8. Building core packages of robosherlock
+WORKDIR /home/rs/rs_ws
+RUN catkin init && \
     catkin config --extend /home/rs/base_ws/devel && \
-    catkin build --verbose --cmake-args -DWITH_JSON_PROLOG=True && \
-    rosdep update
+    catkin build --verbose --cmake-args -DWITH_JSON_PROLOG=True &&\
+    /bin/bash -c "source /home/rs/base_ws/devel/setup.bash"
+RUN chown -R rs:rs .  
+
+#9. Declaring and Exposing host devices
 
 ENV USER=rs
 EXPOSE 5555
 
 COPY ./dump /home/rs/dump
+RUN   mkdir -p /home/rs/data 
 COPY ./data /home/rs/data
+
+user rs
+WORKDIR /home/rs/base_ws
+RUN catkin build
+
+
 USER root
 RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - ; \
     apt-get install -y nodejs
-
-ADD wetty /home/rs/wetty
-WORKDIR /home/rs/wetty
 USER root
+RUN chown -R rs:rs /home/rs/dump
+WORKDIR /home/rs
+RUN git clone https://github.com/krishnasrinivas/wetty.git
+WORKDIR /home/rs/wetty
+RUN git checkout a24c55b76d998c1a29c1f753111563f0087385f5
 RUN npm install 
 
 RUN echo "source /home/rs/rs_ws/devel/setup.bash" >> /home/rs/.bashrc
+RUN echo "export DISPLAY=:0.0" >> /home/rs/.bashrc
 
 EXPOSE 3000
 COPY ./start.sh /
 ENTRYPOINT ["/start.sh"]
-#CMD ["/bin/bash", "-c", "source /root/catkin_ws/devel/setup.bash"]
-CMD ["roslaunch","/home/rs/rs_ws/src/rs_run_configs/launch/json_prolog_and_rosbridge.launch"]
+CMD ["roslaunch","/home/rs/rs_ws/src/rs_run_configs/launch/json_prolog_and_rosbridge.launch"]cd 

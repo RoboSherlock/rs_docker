@@ -2,7 +2,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 WS_FOLDER="$DIR/workspace"
-IMAGE_NAME=robosherlock/rs_interactive
+IMAGE_NAME=fkenghagho/rs_interactive:pcl
 
 # options to grant access to the Xserver (from paparazzi script: https://github.com/paparazzi/paparazzi/blob/master/docker/run.sh
 # enhanced with QT_X11_NO_MITSHM from http://wiki.ros.org/docker/Tutorials/GUI)
@@ -20,8 +20,22 @@ X_WINDOW_OPTS_PAP="--volume=$XSOCK:$XSOCK --volume=$XAUTH:$XAUTH --env=XAUTHORIT
 #--network=host \
 #${IMAGE_NAME} /bin/bash
 
-docker run -d $X_WINDOW_OPTS_PAP \
-  -p 3000:3000 -p 1111:5555 -p 9090:9090 -p 8080:8080 \
-  --network="host" \
-  --name rs_container \
-${IMAGE_NAME}
+#docker run -d $X_WINDOW_OPTS_PAP \
+#  -p 3000:3000 -p 1111:5555 -p 9090:9090 -p 8080:8080 \
+#  --network="host" \
+#  --name rs_container \
+#  --device /dev/nvidia0 \
+#  --device /dev/nvidiactl \
+#${IMAGE_NAME}
+
+#running docker
+docker run --interactive \
+           --privileged \
+           -ti \
+           -v /tmp/.X11-unix:/tmp/.X11-unix \
+           --device /dev/nvidia0 \
+           --device /dev/nvidiactl \
+           -e DISPLAY=:0.0 \
+           -d \
+           -p 3000:3000 -p 8080:8080 -p 1111:5555 -p 9090:9090 --name rs_demo fkenghagho/rs_interactive:latest
+
