@@ -152,12 +152,12 @@ RUN git checkout a24c55b76d998c1a29c1f753111563f0087385f5
 RUN npm install 
 
 USER rs
-rosdep update
+RUN rosdep update
 
 USER root
 RUN echo "source /home/rs/rs_ws/devel/setup.bash" >> /home/rs/.bashrc
-RUN echo " alias rs_next='rosservice call /RoboSherlock/vis_command "'"'"'next'"'"'"' "
-RUN echo " alias rs_prev='rosservice call /RoboSherlock/vis_command "'"'"'previous'"'"'"'"
+RUN echo " alias rs_next='rosservice call /RoboSherlock/vis_command "'"'"'next'"'"'"' " >> /home/rs/.bashrc
+RUN echo " alias rs_prev='rosservice call /RoboSherlock/vis_command "'"'"'previous'"'"'"'" >> /home/rs/.bashrc
 #RUN echo "export DISPLAY=:0.0" >> /home/rs/.bashrc
 
 EXPOSE 3000
