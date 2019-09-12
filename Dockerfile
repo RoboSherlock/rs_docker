@@ -152,7 +152,7 @@ RUN git checkout a24c55b76d998c1a29c1f753111563f0087385f5
 RUN npm install 
 
 USER rs
-rosdep update
+RUN rosdep update
 
 USER root
 RUN echo "source /home/rs/rs_ws/devel/setup.bash" >> /home/rs/.bashrc
