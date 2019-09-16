@@ -70,7 +70,8 @@ WORKDIR /home/rs/rs_ws/src
 RUN git clone https://github.com/RoboSherlock/robosherlock.git --recursive && \
     git clone https://github.com/bbferka/rs_addons.git && \
     git clone https://github.com/RoboSherlock/rs_ease_fs && \
-    git clone https://github.com/RoboSherlock/rs_web 
+    git clone https://github.com/RoboSherlock/rs_web && \
+    git clone https://github.com/RoboSherlock/rs_resources.git
 
 
 #4. Downloading Caffe package
@@ -134,7 +135,7 @@ EXPOSE 5555
 COPY ./dump /home/rs/dump
 RUN   mkdir -p /home/rs/data 
 COPY ./data /home/rs/data
-
+COPY ./model /home/rs/rs_ws/src/rs_resources/caffe/models/bvlc_reference_caffenet
 user rs
 WORKDIR /home/rs/base_ws
 RUN catkin build
