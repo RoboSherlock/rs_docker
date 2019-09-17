@@ -68,7 +68,7 @@ RUN mkdir -p /home/rs/base_ws/src && \
 #3. Downloading core packages of robosherlock
 
 WORKDIR /home/rs/rs_ws/src
-RUN git clone https://github.com/RoboSherlock/robosherlock.git --recursive && \
+RUN git clone https://github.com/RoboSherlock/robosherlock.git --recursive -b devel_ease_fs && \
     git clone https://github.com/bbferka/rs_addons.git && \
     git clone https://github.com/RoboSherlock/rs_ease_fs && \
     git clone https://github.com/RoboSherlock/rs_web && \
