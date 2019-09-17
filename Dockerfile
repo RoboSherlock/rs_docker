@@ -52,7 +52,8 @@ RUN pip install python-rrdtool
 RUN pip install flask pymongo pyparsing socketio flask-paginate flask-wtf gevent lxml
 
 RUN useradd -ms /bin/bash rs &&\
-    echo 'rs:rs' | chpasswd
+    echo 'rs:rs' | chpasswd &&\
+    adduser rs sudo
 
 ENV LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
 
@@ -82,7 +83,7 @@ RUN git clone https://github.com/bvlc/caffe
 #5. Building Caffe
 
 WORKDIR /home/rs/local/src/caffe/
-RUN mkdir build && cd build && cmake ../ -DCPU_ONLY=On -DCMAKE_INSTALL_PREFIX=/usr/local && make && make install
+RUN mkdir build && cd build && cmake ../ -DCPU_ONLY=On -DCMAKE_INSTALL_PREFIX=/usr/local -DOpenCV_DIR=/opt/ros/kinetic/share/OpenCV-3.3.1-dev && make && make install
  
 #6. Downloading Knowrob
 
