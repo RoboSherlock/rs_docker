@@ -62,13 +62,13 @@ ENV LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
 RUN mkdir -p /home/rs/base_ws/src && \
     mkdir -p /home/rs/rs_ws/src && \ 
     mkdir -p /home/rs/mongo && \
-    mkdir -p /home/rs/dump && \ 
+#    mkdir -p /home/rs/dump && \ 
     mkdir -p /home/rs/local/src
 
 #3. Downloading core packages of robosherlock
 
 WORKDIR /home/rs/rs_ws/src
-RUN git clone https://github.com/RoboSherlock/robosherlock.git --recursive -b devel_ease_fs && \
+RUN git clone https://github.com/RoboSherlock/robosherlock.git --recursive && \
     git clone https://github.com/bbferka/rs_addons.git && \
     git clone https://github.com/RoboSherlock/rs_ease_fs && \
     git clone https://github.com/RoboSherlock/rs_web --recursive && \
@@ -133,7 +133,7 @@ RUN chown -R rs:rs .
 ENV USER=rs
 EXPOSE 5555
 
-COPY ./dump /home/rs/dump
+#COPY ./dump /home/rs/dump # no need for the mongo data
 RUN   mkdir -p /home/rs/data 
 COPY ./data /home/rs/data
 COPY ./model /home/rs/rs_ws/src/rs_resources/caffe/models/bvlc_reference_caffenet
@@ -146,7 +146,7 @@ USER root
 RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash - ; \
     apt-get install -y nodejs
 USER root
-RUN chown -R rs:rs /home/rs/dump
+#RUN chown -R rs:rs /home/rs/dump
 WORKDIR /home/rs
 RUN git clone https://github.com/krishnasrinivas/wetty.git
 WORKDIR /home/rs/wetty
