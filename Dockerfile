@@ -70,7 +70,7 @@ WORKDIR /home/rs/rs_ws/src
 RUN git clone https://github.com/RoboSherlock/robosherlock.git --recursive && \
     git clone https://github.com/bbferka/rs_addons.git && \
     git clone https://github.com/RoboSherlock/rs_ease_fs && \
-    git clone https://github.com/RoboSherlock/rs_web && \
+    git clone https://github.com/RoboSherlock/rs_web --recursive && \
     git clone https://github.com/RoboSherlock/rs_resources.git
 
 
